@@ -32,7 +32,7 @@ namespace application
         {
             ConfigureService.ConfigureDependenciesService(services);
             ConfigureRepository.ConfigureDependenciesRepository(services);
-            
+
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations); //Instancia Unica
 
@@ -40,7 +40,7 @@ namespace application
             new ConfigureFromConfigurationOptions<TokenConfigurations>(
                 Configuration.GetSection("TokenConfigurations"))
                     .Configure(tokenConfigurations);
-            
+
             services.AddSingleton(tokenConfigurations);
 
             services.AddAuthentication(authOptions =>
@@ -66,12 +66,12 @@ namespace application
                 paramsValidation.ClockSkew = TimeSpan.Zero;
             });
 
-             services.AddAuthorization(auth =>
-            {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                    .RequireAuthenticatedUser().Build());
-            });
+            services.AddAuthorization(auth =>
+           {
+               auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                   .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                   .RequireAuthenticatedUser().Build());
+           });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -93,8 +93,27 @@ namespace application
                         Name = "Termo de Licença de Uso",
                         Url = new Uri("http://www.mfrinfo.com.br")
                     }
-                }
-                );
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Entre com o Token JWT",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        }, new List<string>()
+                    }
+                });
+
             });
         }
 
