@@ -9,12 +9,4 @@
  - API terá o JWT (JSON Web Token) para geração dos Tokens para ser   consumida com aplicação externa ou Front-End.
  - O Swagger é uma ferramenta para documentar uma API.
  - MySQL e MS-SQL-Server.
- - Arquitetura Testes Unitário (xUnit) por Camadas, será utilizando Mock   e Faker .NETCore
-
-*Mock serve para que consigamos criar dados fictícios, baseados em nosso modelo de negócios, para verificar o comportamento de nossas aplicações pode ser utilizado para emular tanto repositórios de dados quanto objetos individuais em testes unitário.*
-
-*Faker .NetCore tem a funcionalidade criar dados fictício (Nome, e-mail, Endereço, Telefone entre outros)*
-
-*Será criado um projeto de Testes de Integração, este projeto tem como objeto de testar suas próprias Requisições*
-
-*O Projeto terá os seguintes EndPoints (Usuário, UF (Unidade Federal), Município e CEPs)*
+ - Arquitetura Testes Unitário (xUnit) por Camadas, será utilizando Mock e Faker .NETCore
