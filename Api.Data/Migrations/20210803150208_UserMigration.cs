@@ -25,14 +25,13 @@ namespace Data.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "CreatedAt", "Email", "Name", "UpdatedAt" },
-                values: new object[] { new Guid("2ca53314-1e70-4c7e-a97a-3dc99f6bf6ff"), new DateTime(2021, 8, 3, 14, 46, 46, 386, DateTimeKind.Utc).AddTicks(7932), "user@example.com", "ADMIN", new DateTime(2021, 8, 3, 14, 46, 46, 386, DateTimeKind.Utc).AddTicks(9941) });
+                values: new object[] { new Guid("011ada1f-0bd9-447c-808d-bb9d37588a19"), new DateTime(2021, 8, 3, 15, 2, 7, 658, DateTimeKind.Utc).AddTicks(1314), "user@example.com", "ADMIN", new DateTime(2021, 8, 3, 15, 2, 7, 658, DateTimeKind.Utc).AddTicks(5661) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
                 table: "User",
                 column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

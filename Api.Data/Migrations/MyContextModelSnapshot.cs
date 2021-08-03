@@ -3,7 +3,6 @@ using System;
 using Api.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
@@ -16,46 +15,44 @@ namespace Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Api.Domain.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)")
+                        .HasColumnType("varchar(60) CHARACTER SET utf8mb4")
                         .HasMaxLength(60);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("User");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2ca53314-1e70-4c7e-a97a-3dc99f6bf6ff"),
-                            CreatedAt = new DateTime(2021, 8, 3, 14, 46, 46, 386, DateTimeKind.Utc).AddTicks(7932),
+                            Id = new Guid("011ada1f-0bd9-447c-808d-bb9d37588a19"),
+                            CreatedAt = new DateTime(2021, 8, 3, 15, 2, 7, 658, DateTimeKind.Utc).AddTicks(1314),
                             Email = "user@example.com",
                             Name = "ADMIN",
-                            UpdatedAt = new DateTime(2021, 8, 3, 14, 46, 46, 386, DateTimeKind.Utc).AddTicks(9941)
+                            UpdatedAt = new DateTime(2021, 8, 3, 15, 2, 7, 658, DateTimeKind.Utc).AddTicks(5661)
                         });
                 });
 #pragma warning restore 612, 618
