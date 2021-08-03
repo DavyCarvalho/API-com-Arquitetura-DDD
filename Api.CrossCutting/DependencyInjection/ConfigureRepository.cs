@@ -17,7 +17,7 @@ namespace Api.CrossCutting.DependencyInjection
             //DOTNET quando eu for usar o IUserRepository você instacia o UserImplementation!!!
 
             serviceCollection.AddDbContext<MyContext> (
-                options => options.UseMySql("Server=localhost;Port=3306;DataBase=dbAPI;Uid=root;Pwd=0219davy")
+                options => options.UseSqlServer("Server=.\\SQLEXPRESS2017;Initial Catalog=dbapi;MultipleActiveResultSets=true;User ID=sa;Password=Dc@1234567")
             );
         }
 
