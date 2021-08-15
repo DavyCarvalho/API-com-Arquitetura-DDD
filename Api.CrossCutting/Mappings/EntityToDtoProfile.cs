@@ -8,8 +8,8 @@ namespace Api.CrossCutting.Mappings
     {
         public EntityToDtoProfile()
         {
-            CreateMap<UserDto, UserEntity>() // converte do 1º para o 2º
-                .ReverseMap(); // permite que o processo seja feito ao contrario
+            CreateMap<UserDto, UserEntity>()
+                .ReverseMap();
             CreateMap<UserDtoCreateResult, UserEntity>()
                 .ReverseMap();
             CreateMap<UserDtoUpdateResult, UserEntity>()
