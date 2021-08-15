@@ -32,9 +32,7 @@ namespace Api.Service.Services.User
         public async Task<UserDto> Get(Guid id)
         {
             var entity = await _repository.SelectAsync(id);
-            return _mapper.Map<UserDto>(entity) ?? new UserDto();
-                                            //verifica se a entity está nula, se sim, 
-                                            //ele cria um novo obj de UserDto
+            return _mapper.Map<UserDto>(entity);
         }
 
         public async Task<IEnumerable<UserDto>> GetAll()

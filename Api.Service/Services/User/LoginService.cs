@@ -16,20 +16,18 @@ namespace Api.Service.Services
     public class LoginService : ILoginService
     {
         private IUserRepository _repository;
-        private SigningConfigurations _signingConfigurations;
-        private TokenConfigurations _tokenConfigurations;
+        public SigningConfigurations _signingConfigurations;
         private IConfiguration _configuration { get; }
 
         public LoginService(IUserRepository repository,
-                            IConfiguration configuration,
                             SigningConfigurations signingConfigurations,
-                            TokenConfigurations tokenConfigurations)
+                            IConfiguration configuration)
         {
             _repository = repository;
             _signingConfigurations = signingConfigurations;
             _configuration = configuration;
-            _tokenConfigurations = tokenConfigurations;
         }
+
         public async Task<object> FindByLogin(LoginDto user)
         {
             var baseUser = new UserEntity();
@@ -46,16 +44,17 @@ namespace Api.Service.Services
                 }
                 else
                 {
-                    var identity = new ClaimsIdentity(
+                    ClaimsIdentity identity = new ClaimsIdentity(
                         new GenericIdentity(user.Email),
                         new[]
                         {
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //jti O id do token
-                    new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
                         }
                     );
-                    DateTime createDate = DateTime.Now;
-                    DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfigurations.Seconds);  //60 segundos = 1 minuto
+
+                    DateTime createDate = DateTime.UtcNow;
+                    DateTime expirationDate = createDate + TimeSpan.FromSeconds(Convert.ToInt32(Environment.GetEnvironmentVariable("Seconds")));
 
                     var handler = new JwtSecurityTokenHandler();
                     string token = CreateToken(identity, createDate, expirationDate, handler);
@@ -76,8 +75,8 @@ namespace Api.Service.Services
         {
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _tokenConfigurations.Issuer,
-                Audience = _tokenConfigurations.Audience,
+                Issuer = Environment.GetEnvironmentVariable("Issuer"),
+                Audience = Environment.GetEnvironmentVariable("Audience"),
                 SigningCredentials = _signingConfigurations.SigningCredentials,
                 Subject = identity,
                 NotBefore = createDate,
@@ -93,9 +92,9 @@ namespace Api.Service.Services
             return new
             {
                 authenticated = true,
-                created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                create = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                acessToken = token,
+                accessToken = token,
                 userName = user.Email,
                 name = user.Name,
                 message = "Usuário Logado com sucesso"

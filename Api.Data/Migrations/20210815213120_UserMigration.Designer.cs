@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20210803150208_UserMigration")]
+    [Migration("20210815213120_UserMigration")]
     partial class UserMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -37,7 +37,7 @@ namespace Data.Migrations
                         .HasColumnType("varchar(60) CHARACTER SET utf8mb4")
                         .HasMaxLength(60);
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -50,11 +50,11 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("011ada1f-0bd9-447c-808d-bb9d37588a19"),
-                            CreatedAt = new DateTime(2021, 8, 3, 15, 2, 7, 658, DateTimeKind.Utc).AddTicks(1314),
+                            Id = new Guid("d914de0c-b80d-41ba-a57c-48f7415cf986"),
+                            CreateAt = new DateTime(2021, 8, 15, 21, 31, 19, 488, DateTimeKind.Utc).AddTicks(338),
                             Email = "user@example.com",
                             Name = "ADMIN",
-                            UpdatedAt = new DateTime(2021, 8, 3, 15, 2, 7, 658, DateTimeKind.Utc).AddTicks(5661)
+                            UpdateAt = new DateTime(2021, 8, 15, 21, 31, 19, 488, DateTimeKind.Utc).AddTicks(1843)
                         });
                 });
 #pragma warning restore 612, 618
