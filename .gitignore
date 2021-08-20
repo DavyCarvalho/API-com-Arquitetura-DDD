@@ -8,9 +8,14 @@
 # wget --no-check-certificate http://gist.githubusercontent.com/kmorcinek/2710267/raw/.gitignore
 
 # User-specific files
+*.opencover.xml
+coverage.json
+*.info
 *.suo
 *.user
 *.sln.docstates
+.sonarqube*
+
 
 # Build results
 [Dd]ebug/
