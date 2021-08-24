@@ -4,6 +4,7 @@ using System.Linq;
 using Api.Domain.Dtos.User;
 using Api.Domain.Entities;
 using Api.Domain.Models;
+using FluentAssertions;
 using Xunit;
 
 namespace Api.UnitTests.Service.AutoMapper
@@ -38,57 +39,56 @@ namespace Api.UnitTests.Service.AutoMapper
 
             //Model => Entity
             var entity = Mapper.Map<UserEntity>(model);
-            Assert.Equal(entity.Id, model.Id);
-            Assert.Equal(entity.Name, model.Name);
-            Assert.Equal(entity.Email, model.Email);
-            Assert.Equal(entity.CreateAt, model.CreateAt);
-            Assert.Equal(entity.UpdateAt, model.UpdateAt);
+            model.Id.Should().Be(entity.Id);
+            model.Name.Should().Be(entity.Name);
+            model.Email.Should().Be(entity.Email);
+            model.CreateAt.Should().Be(entity.CreateAt);
+            model.UpdateAt.Should().Be(entity.UpdateAt);
 
             //Entity para Dto
             var userDto = Mapper.Map<UserDto>(entity);
-            Assert.Equal(userDto.Id, entity.Id);
-            Assert.Equal(userDto.Name, entity.Name);
-            Assert.Equal(userDto.Email, entity.Email);
-            Assert.Equal(userDto.CreateAt, entity.CreateAt);
-
+            entity.Id.Should().Be(userDto.Id);
+            entity.Name.Should().Be(userDto.Name);
+            entity.Email.Should().Be(userDto.Email);
+            entity.CreateAt.Should().Be(userDto.CreateAt);
+            
             var listaDto = Mapper.Map<List<UserDto>>(listaEntity);
             Assert.True(listaDto.Count() == listaEntity.Count());
             for (int i = 0; i < listaDto.Count(); i++)
             {
-                Assert.Equal(listaDto[i].Id, listaEntity[i].Id);
-                Assert.Equal(listaDto[i].Name, listaEntity[i].Name);
-                Assert.Equal(listaDto[i].Email, listaEntity[i].Email);
-                Assert.Equal(listaDto[i].CreateAt, listaEntity[i].CreateAt);
+                listaEntity[i].Id.Should().Be(listaDto[i].Id);
+                listaEntity[i].Name.Should().Be(listaDto[i].Name);
+                listaEntity[i].Email.Should().Be(listaDto[i].Email);
+                listaEntity[i].CreateAt.Should().Be(listaDto[i].CreateAt);
             }
 
             var userDtoCreateResult = Mapper.Map<UserDtoCreateResult>(entity);
-            Assert.Equal(userDtoCreateResult.Id, entity.Id);
-            Assert.Equal(userDtoCreateResult.Name, entity.Name);
-            Assert.Equal(userDtoCreateResult.Email, entity.Email);
-            Assert.Equal(userDtoCreateResult.CreateAt, entity.CreateAt);
+            entity.Id.Should().Be(userDtoCreateResult.Id);
+            entity.Name.Should().Be(userDtoCreateResult.Name);
+            entity.Email.Should().Be(userDtoCreateResult.Email);
+            entity.CreateAt.Should().Be(userDtoCreateResult.CreateAt);
 
             var userDtoUpdateResult = Mapper.Map<UserDtoUpdateResult>(entity);
-            Assert.Equal(userDtoUpdateResult.Id, entity.Id);
-            Assert.Equal(userDtoUpdateResult.Name, entity.Name);
-            Assert.Equal(userDtoUpdateResult.Email, entity.Email);
-            Assert.Equal(userDtoUpdateResult.UpdateAt, entity.UpdateAt);
+            entity.Id.Should().Be(userDtoUpdateResult.Id);
+            entity.Name.Should().Be(userDtoUpdateResult.Name);
+            entity.Email.Should().Be(userDtoUpdateResult.Email);
+            entity.UpdateAt.Should().Be(userDtoUpdateResult.UpdateAt);
 
             //Dto para Model
             var userModel = Mapper.Map<UserModel>(userDto);
-            Assert.Equal(userModel.Id, userDto.Id);
-            Assert.Equal(userModel.Name, userDto.Name);
-            Assert.Equal(userModel.Email, userDto.Email);
-            Assert.Equal(userModel.CreateAt, userDto.CreateAt);
+            userDto.Id.Should().Be(userModel.Id);
+            userDto.Name.Should().Be(userModel.Name);
+            userDto.Email.Should().Be(userModel.Email);
+            userDto.CreateAt.Should().Be(userModel.CreateAt);
 
             var userDtoCreate = Mapper.Map<UserDtoCreate>(userModel);
-            Assert.Equal(userDtoCreate.Name, userModel.Name);
-            Assert.Equal(userDtoCreate.Email, userModel.Email);
+            userModel.Name.Should().Be(userDtoCreate.Name);
+            userModel.Email.Should().Be(userDtoCreate.Email);
 
             var userDtoUpdate = Mapper.Map<UserDtoUpdate>(userModel);
-            Assert.Equal(userDtoUpdate.Id, userModel.Id);
-            Assert.Equal(userDtoUpdate.Name, userModel.Name);
-            Assert.Equal(userDtoUpdate.Email, userModel.Email);
-
+            userModel.Id.Should().Be(userDtoUpdate.Id);
+            userModel.Name.Should().Be(userDtoUpdate.Name);
+            userModel.Email.Should().Be(userDtoUpdate.Email);
         }
     }
 }

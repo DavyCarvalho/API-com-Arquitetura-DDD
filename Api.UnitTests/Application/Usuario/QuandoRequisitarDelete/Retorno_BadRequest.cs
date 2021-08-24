@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Api.Application.Controllers;
-using Api.Domain.Dtos.User;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -24,8 +24,8 @@ namespace Api.UnitTests.Application.Usuario.QuandoRequisitarDelete
             _controller.ModelState.AddModelError("Id", "Formato Inválido");
 
             var result = await _controller.Delete(default(Guid));
-            Assert.True(result is BadRequestObjectResult);
-            Assert.False(_controller.ModelState.IsValid);
+            (result is BadRequestObjectResult).Should().BeTrue();
+            (_controller.ModelState.IsValid).Should().BeFalse();
         }
     }
 }

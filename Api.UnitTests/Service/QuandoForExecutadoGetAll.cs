@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Domain.Dtos.User;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -21,8 +22,8 @@ namespace Api.UnitTests.Service
             _service = _serviceMock.Object;
 
             var result = await _service.GetAll();
-            Assert.NotNull(result);
-            Assert.True(result.Count() == 10);
+            (result).Should().NotBeNull();
+            (result.Count() == 10).Should().BeTrue();
 
             var _listResult = new List<UserDto>();
             _serviceMock = new Mock<IUserService>();
@@ -30,8 +31,8 @@ namespace Api.UnitTests.Service
             _service = _serviceMock.Object;
 
             var _resultEmpty = await _service.GetAll();
-            Assert.Empty(_resultEmpty);
-            Assert.True(_resultEmpty.Count() == 0);
+            (_resultEmpty).Should().BeEmpty();
+            (_resultEmpty.Count() == 0).Should().BeTrue();
         }
     }
 }

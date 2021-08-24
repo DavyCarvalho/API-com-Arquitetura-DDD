@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Api.Data.Context;
 using Api.Data.Implementations;
 using Api.Domain.Entities;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using static Api.UnitTests.Data.BaseTest;
@@ -34,37 +35,36 @@ namespace Api.UnitTests.Data
                 };
 
                 var _registroCriado = await _repositorio.InsertAsync(_entity);
-                Assert.NotNull(_registroCriado);
-                Assert.Equal(_entity.Email, _registroCriado.Email);
-                Assert.Equal(_entity.Name, _registroCriado.Name);
-                Assert.False(_registroCriado.Id == Guid.Empty);
+                _registroCriado.Should().NotBeNull();
+                _registroCriado.Email.Should().Be(_entity.Email);
+                _registroCriado.Name.Should().Be(_entity.Name);
+                _registroCriado.Id.Should().NotBe(Guid.Empty);
 
                 _entity.Name = Faker.Name.First();
                 var _registroAtualizado = await _repositorio.UpdateAsync(_entity);
-                Assert.NotNull(_registroAtualizado);
-                Assert.Equal(_entity.Email, _registroAtualizado.Email);
-                Assert.Equal(_entity.Name, _registroAtualizado.Name);
+                _registroAtualizado.Should().NotBeNull();
+                _registroAtualizado.Email.Should().Be(_entity.Email);
+                _registroAtualizado.Name.Should().Be(_entity.Name);
 
                 var _registroExiste = await _repositorio.ExistAsync(_registroAtualizado.Id);
                 Assert.True(_registroExiste);
 
                 var _registroSelecionado = await _repositorio.SelectAsync(_registroAtualizado.Id);
-                Assert.NotNull(_registroSelecionado);
-                Assert.Equal(_registroAtualizado.Email, _registroSelecionado.Email);
-                Assert.Equal(_registroAtualizado.Name, _registroSelecionado.Name);
+                _registroSelecionado.Should().NotBeNull();
+                _registroAtualizado.Email.Should().Be(_registroSelecionado.Email);
+                _registroAtualizado.Name.Should().Be(_registroSelecionado.Name);
 
                 var _todosRegistros = await _repositorio.SelectAsync();
-                Assert.NotNull(_todosRegistros);
-                Assert.True(_todosRegistros.Count() > 1);
+                _todosRegistros.Should().NotBeNull();
+                (_todosRegistros.Count() > 1).Should().BeTrue();
 
                 var _removeu = await _repositorio.DeleteAsync(_registroSelecionado.Id);
-                Assert.True(_removeu);
+                _removeu.Should().BeTrue();
 
                 var _usuarioPadrao = await _repositorio.FindByLogin("user@example.com");
-                Assert.NotNull(_usuarioPadrao);
-                Assert.Equal("user@example.com", _usuarioPadrao.Email);
-                Assert.Equal("ADMIN", _usuarioPadrao.Name);
-
+                _usuarioPadrao.Should().NotBeNull();
+                _usuarioPadrao.Email.Should().Be("user@example.com");
+                _usuarioPadrao.Name.Should().Be("ADMIN");
             }
         }
     }

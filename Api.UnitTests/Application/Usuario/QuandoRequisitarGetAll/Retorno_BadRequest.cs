@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Api.Application.Controllers;
 using Api.Domain.Dtos.User;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -41,7 +42,7 @@ namespace Api.UnitTests.Application.Usuario.QuandoRequisitarGetAll
             _controller.ModelState.AddModelError("Id", "Formato Invalido");
 
             var result = await _controller.GetAll();
-            Assert.True(result is BadRequestObjectResult);
+            (result is BadRequestObjectResult).Should().BeTrue();
         }
     }
 }

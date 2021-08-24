@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Api.Domain.Dtos;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -37,7 +38,7 @@ namespace Api.UnitTests.Service.Login
             _service = _serviceMock.Object;
 
             var result = await _service.FindByLogin(loginDto);
-            Assert.NotNull(result);
+            (result).Should().NotBeNull();
         }
     }
 }

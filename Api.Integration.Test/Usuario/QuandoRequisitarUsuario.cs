@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Api.Domain.Dtos.User;
+using FluentAssertions;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -33,19 +34,19 @@ namespace Api.Integration.Test.Usuario
             var response = await PostJsonAsync(userDto, $"{hostApi}users", client);
             var postResult = await response.Content.ReadAsStringAsync();
             var registroPost = JsonConvert.DeserializeObject<UserDtoCreateResult>(postResult);
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            Assert.Equal(_name, registroPost.Name);
-            Assert.Equal(_email, registroPost.Email);
-            Assert.True(registroPost.Id != default(Guid));
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            registroPost.Name.Should().Be(_name);
+            registroPost.Email.Should().Be(_email);
+            registroPost.Id.Should().NotBe(default(Guid));
 
             //Get All
             response = await client.GetAsync($"{hostApi}users");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var jsonResult = await response.Content.ReadAsStringAsync();
             var listaFromJson = JsonConvert.DeserializeObject<IEnumerable<UserDto>>(jsonResult);
-            Assert.NotNull(listaFromJson);
-            Assert.True(listaFromJson.Count() > 0);
-            Assert.True(listaFromJson.Where(r => r.Id == registroPost.Id).Count() == 1);
+            listaFromJson.Should().NotBeNull();
+            (listaFromJson.Count() > 0).Should().BeTrue();
+            (listaFromJson.Where(r => r.Id == registroPost.Id).Count() == 1).Should().BeTrue();
 
             var updateUserDto = new UserDtoUpdate()
             {
@@ -61,27 +62,27 @@ namespace Api.Integration.Test.Usuario
             jsonResult = await response.Content.ReadAsStringAsync();
             var registroAtualizado = JsonConvert.DeserializeObject<UserDtoUpdateResult>(jsonResult);
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.NotEqual(registroPost.Name, registroAtualizado.Name);
-            Assert.NotEqual(registroPost.Email, registroAtualizado.Email);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            registroAtualizado.Name.Should().NotBe(registroPost.Name);
+            registroAtualizado.Email.Should().NotBe(registroPost.Email);
 
             //GET Id
             response = await client.GetAsync($"{hostApi}users/{registroAtualizado.Id}");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             jsonResult = await response.Content.ReadAsStringAsync();
             var registroSelecionado = JsonConvert.DeserializeObject<UserDto>(jsonResult);
-            Assert.NotNull(registroSelecionado);
-            Assert.Equal(registroSelecionado.Name, registroAtualizado.Name);
-            Assert.Equal(registroSelecionado.Email, registroAtualizado.Email);
+
+            registroSelecionado.Should().NotBeNull();
+            registroSelecionado.Name.Should().Be(registroAtualizado.Name);
+            registroSelecionado.Email.Should().Be(registroAtualizado.Email);
 
             //DELETE
             response = await client.DeleteAsync($"{hostApi}users/{registroSelecionado.Id}");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             //GET ID depois do DELETE
             response = await client.GetAsync($"{hostApi}users/{registroSelecionado.Id}");
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
 }

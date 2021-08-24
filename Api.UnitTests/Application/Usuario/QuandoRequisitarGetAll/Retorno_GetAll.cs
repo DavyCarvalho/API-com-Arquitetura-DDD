@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Api.Application.Controllers;
 using Api.Domain.Dtos.User;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -40,10 +41,10 @@ namespace Api.UnitTests.Application.Usuario.QuandoRequisitarGetAll
             );
             _controller = new UsersController(serviceMock.Object);
             var result = await _controller.GetAll();
-            Assert.True(result is OkObjectResult);
+            (result is OkObjectResult).Should().BeTrue();
 
             var resultValue = ((OkObjectResult)result).Value as IEnumerable<UserDto>;
-            Assert.True(resultValue.Count() == 2);
+            (resultValue.Count() == 2).Should().BeTrue();
         }
     }
 }

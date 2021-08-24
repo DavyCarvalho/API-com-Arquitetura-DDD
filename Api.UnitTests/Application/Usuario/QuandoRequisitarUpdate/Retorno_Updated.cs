@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Api.Application.Controllers;
 using Api.Domain.Dtos.User;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -43,9 +44,9 @@ namespace Api.UnitTests.Application.Usuario.QuandoRequisitarUpdate
             Assert.True(result is OkObjectResult);
 
             UserDtoUpdateResult resultValue = ((OkObjectResult)result).Value as UserDtoUpdateResult;
-            Assert.NotNull(resultValue);
-            Assert.Equal(userDtoUpdate.Name, resultValue.Name);
-            Assert.Equal(userDtoUpdate.Email, resultValue.Email);
+            resultValue.Should().NotBeNull();
+            resultValue.Name.Should().Be(userDtoUpdate.Name);
+            resultValue.Email.Should().Be(userDtoUpdate.Email);
         }
     }
 }

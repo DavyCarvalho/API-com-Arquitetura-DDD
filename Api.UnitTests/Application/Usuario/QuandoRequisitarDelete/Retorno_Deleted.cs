@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Api.Application.Controllers;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -22,11 +23,11 @@ namespace Api.UnitTests.Application.Usuario.QuandoRequisitarDelete
             _controller = new UsersController(serviceMock.Object);
 
             var result = await _controller.Delete(Guid.NewGuid());
-            Assert.True(result is OkObjectResult);
+            (result is OkObjectResult).Should().BeTrue();
 
             var resultValue = ((OkObjectResult)result).Value;
-            Assert.NotNull(resultValue);
-            Assert.True((Boolean)resultValue);
+            resultValue.Should().NotBeNull();
+            ((Boolean)resultValue).Should().BeTrue();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -18,9 +19,9 @@ namespace Api.UnitTests.Service
             _service = _serviceMock.Object;
 
             var result = await _service.Post(userDtoCreate);
-            Assert.NotNull(result);
-            Assert.Equal(NomeUsuario, result.Name);
-            Assert.Equal(EmailUsuario, result.Email);
+            (result).Should().NotBeNull();
+            result.Name.Should().Be(NomeUsuario);
+            result.Email.Should().Be(EmailUsuario);
         }
     }
 }

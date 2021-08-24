@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Api.Application.Controllers;
 using Api.Domain.Dtos.User;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -32,12 +33,11 @@ namespace Api.UnitTests.Application.Usuario.QuandoRequisitarGet
 
             _controller = new UsersController(serviceMock.Object);
             var result = await _controller.Get(Guid.NewGuid());
-            Assert.True(result is OkObjectResult);
+            (result is OkObjectResult).Should().BeTrue();
             var resultValue = ((OkObjectResult)result).Value as UserDto;
-            Assert.NotNull(resultValue);
-            Assert.Equal(nome, resultValue.Name);
-            Assert.Equal(email, resultValue.Email);
-
+            resultValue.Should().NotBeNull();
+            resultValue.Name.Should().Be(nome);
+            resultValue.Email.Should().Be(email);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Api.Application.Controllers;
 using Api.Domain.Dtos.User;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -43,12 +44,12 @@ namespace Api.UnitTests.Application.Usuario.QuandoRequisitarCreate
             };
 
             var result = await _controller.Post(userDtoCreate);
-            Assert.True(result is CreatedResult);
+            (result is CreatedResult).Should().BeTrue();
 
             var resultValue = ((CreatedResult)result).Value as UserDtoCreateResult;
-            Assert.NotNull(resultValue);
-            Assert.Equal(userDtoCreate.Name, resultValue.Name);
-            Assert.Equal(userDtoCreate.Email, resultValue.Email);
+            (resultValue).Should().NotBeNull();
+            resultValue.Name.Should().Be(userDtoCreate.Name);
+            resultValue.Email.Should().Be(userDtoCreate.Email);
         }
     }
 }

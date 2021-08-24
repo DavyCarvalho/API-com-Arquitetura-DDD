@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Api.Domain.Interfaces.Services.User;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace Api.UnitTests.Service
             _service = _serviceMock.Object;
 
             var deletado = await _service.Delete(IdUsuario);
-            Assert.True(deletado);
+            (deletado).Should().BeTrue();
 
             _serviceMock = new Mock<IUserService>();
             _serviceMock.Setup(m => m.Delete(It.IsAny<Guid>()))
@@ -27,8 +28,7 @@ namespace Api.UnitTests.Service
             _service = _serviceMock.Object;
 
             deletado = await _service.Delete(Guid.NewGuid());
-            Assert.False(deletado);
-
+            (deletado).Should().BeFalse();
         }
     }
 }
